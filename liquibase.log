@@ -1,0 +1,28 @@
+2025-03-25T14:45:55.417-03:00  INFO 20584 --- [board] [           main] liquibase.database                       : Set default schema name to public
+2025-03-25T14:45:55.694-03:00  INFO 20584 --- [board] [           main] liquibase.changelog                      : Reading resource: db/changelog/migrations/db.changelog-202503251427.sql
+2025-03-25T14:45:55.779-03:00  INFO 20584 --- [board] [           main] liquibase.changelog                      : Reading from public.databasechangelog
+2025-03-25T14:45:55.828-03:00  INFO 20584 --- [board] [           main] liquibase.lockservice                    : Successfully acquired change log lock
+2025-03-25T14:45:55.829-03:00  INFO 20584 --- [board] [           main] liquibase.command                        : Using deploymentId: 2924755828
+2025-03-25T14:45:55.831-03:00  INFO 20584 --- [board] [           main] liquibase.changelog                      : Reading from public.databasechangelog
+Running Changeset: db/changelog/migrations/db.changelog-202503251427.sql::raw::includeAll
+2025-03-25T14:45:55.857-03:00  INFO 20584 --- [board] [           main] liquibase.changelog                      : Custom SQL executed
+2025-03-25T14:45:55.858-03:00  INFO 20584 --- [board] [           main] liquibase.changelog                      : ChangeSet db/changelog/migrations/db.changelog-202503251427.sql::raw::includeAll ran successfully in 21ms
+
+UPDATE SUMMARY
+Run:                          1
+Previously run:               0
+Filtered out:                 0
+-------------------------------
+Total change sets:            1
+
+2025-03-25T14:45:55.873-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : UPDATE SUMMARY
+2025-03-25T14:45:55.873-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : Run:                          1
+2025-03-25T14:45:55.873-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : Previously run:               0
+2025-03-25T14:45:55.874-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : Filtered out:                 0
+2025-03-25T14:45:55.874-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : -------------------------------
+2025-03-25T14:45:55.874-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : Total change sets:            1
+2025-03-25T14:45:55.874-03:00  INFO 20584 --- [board] [           main] liquibase.util                           : Update summary generated
+2025-03-25T14:45:55.876-03:00  INFO 20584 --- [board] [           main] liquibase.command                        : Update command completed successfully.
+Liquibase: Update has been successful. Rows affected: 1
+2025-03-25T14:45:55.878-03:00  INFO 20584 --- [board] [           main] liquibase.lockservice                    : Successfully released change log lock
+2025-03-25T14:45:55.879-03:00  INFO 20584 --- [board] [           main] liquibase.command                        : Command execution complete
