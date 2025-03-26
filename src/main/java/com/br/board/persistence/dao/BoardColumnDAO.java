@@ -21,20 +21,19 @@ public class BoardColumnDAO {
     public BoardColumnEntity insert(final BoardColumnEntity entity) throws SQLException {
         var sql = "INSERT INTO BOARDS_COLUMNS (name, \"order\", kind, board_id) VALUES (?, ?, ?, ?) RETURNING id;";
 
-        try (var statement = connection.prepareStatement(sql);
-             var resultSet = statement.executeQuery()) {
+        try (var statement = connection.prepareStatement(sql)) {
+            statement.setString(1, entity.getName());
+            statement.setInt(2, entity.getOrder());
+            statement.setString(3, entity.getKind().name());
+            statement.setLong(4, entity.getBoard().getId());
 
-            var i = 1;
-            statement.setString(i++, entity.getName());
-            statement.setInt(i++, entity.getOrder());
-            statement.setString(i++, entity.getKind().name());
-            statement.setLong(i, entity.getBoard().getId());
-
-            if (resultSet.next()) {
-                entity.setId(resultSet.getLong(1));
+            try (var resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    entity.setId(resultSet.getLong(1));
+                }
             }
-            return entity;
         }
+        return entity;
     }
 
     public List<BoardColumnEntity> findByBoardId(final Long boardId) throws SQLException {
