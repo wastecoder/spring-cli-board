@@ -4,6 +4,7 @@ import com.br.board.dto.BoardColumnInfoDTO;
 import com.br.board.exception.CardBlockedException;
 import com.br.board.exception.CardFinishedException;
 import com.br.board.exception.EntityNotFoundException;
+import com.br.board.persistence.dao.BlockDAO;
 import com.br.board.persistence.dao.CardDAO;
 import com.br.board.persistence.entity.CardEntity;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static com.br.board.persistence.entity.BoardColumnKindEnum.FINAL;
+import static com.br.board.persistence.entity.BoardColumnKindEnum.CANCEL;
 
 @AllArgsConstructor
 public class CardService {
@@ -88,6 +90,39 @@ public class CardService {
             dao.moveToColumn(cancelColumnId, cardId);
             connection.commit();
         }catch (SQLException ex){
+            connection.rollback();
+            throw ex;
+        }
+    }
+
+    public void block(final Long id, final String reason, final List<BoardColumnInfoDTO> boardColumnsInfo) throws SQLException {
+        try{
+            var dao = new CardDAO(connection);
+            var optional = dao.findById(id);
+            var dto = optional.orElseThrow(
+                    () -> new EntityNotFoundException("O card de id %s não foi encontrado".formatted(id))
+            );
+
+            if (dto.blocked()){
+                var message = "O card %s já está bloqueado".formatted(id);
+                throw new CardBlockedException(message);
+            }
+
+            var currentColumn = boardColumnsInfo.stream()
+                    .filter(bc -> bc.id().equals(dto.columnId()))
+                    .findFirst()
+                    .orElseThrow();
+
+            if (currentColumn.kind().equals(FINAL) || currentColumn.kind().equals(CANCEL)){
+                var message = "O card está em uma coluna do tipo %s e não pode ser bloqueado"
+                        .formatted(currentColumn.kind());
+                throw new IllegalStateException(message);
+            }
+
+            var blockDAO = new BlockDAO(connection);
+            blockDAO.block(reason, id);
+            connection.commit();
+        }catch (SQLException ex) {
             connection.rollback();
             throw ex;
         }
