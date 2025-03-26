@@ -2,9 +2,11 @@ package com.br.board.ui;
 
 import com.br.board.persistence.entity.BoardColumnEntity;
 import com.br.board.persistence.entity.BoardEntity;
+import com.br.board.persistence.entity.CardEntity;
 import com.br.board.service.BoardColumnQueryService;
 import com.br.board.service.BoardQueryService;
 import com.br.board.service.CardQueryService;
+import com.br.board.service.CardService;
 import lombok.AllArgsConstructor;
 
 import java.sql.SQLException;
@@ -56,6 +58,17 @@ public class BoardMenu {
     }
 
     private void createCard() throws SQLException{
+        var card = new CardEntity();
+        System.out.println("Informe o título do card");
+        card.setTitle(scanner.next());
+
+        System.out.println("Informe a descrição do card");
+        card.setDescription(scanner.next());
+
+        card.setBoardColumn(entity.getInitialColumn());
+        try(var connection = getConnection()){
+            new CardService(connection).create(card);
+        }
     }
 
     private void moveCardToNextColumn() throws SQLException {
